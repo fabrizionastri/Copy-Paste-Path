@@ -4,15 +4,15 @@ All notable changes to the "vscode-project-structure" extension will be document
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## **[0.0.1] - 2023-11-13**
+## **[0.0.3] - 2023-11-13**
 
 ### **Added**
 
 - Initial release of the "Copy Paste Path" extension.
-- Implemented **`Copy Unix Path`** command to copy the full path of the current file in Unix format to the clipboard.
-- Implemented **`Copy Paste Quoted Unix Path`** command to copy the full path in Unix format and paste it with quotes at the current cursor position.
-- Implemented **`Copy Unix Relative Path`** command to copy the relative path from the project root in Unix format to the clipboard.
-- Implemented **`Copy Paste Quoted Unix Relative Path`** command to copy the relative path from the project root in Unix format and paste it with quotes at the current cursor position.
+- Implemented **`Copy Path`** command to copy the full path of the current file in Unix format to the clipboard.
+- Implemented **`Copy Paste Path`** command to copy the full path in Unix format and paste it at the current cursor position.
+- Implemented **`Copy Relative Path`** command to copy the relative path from the project root in Unix format to the clipboard.
+- Implemented **`Copy Paste Relative Path`** command to copy the relative path from the project root in Unix format and paste it at the current cursor position.
 - Added basic documentation in README.md.
 
 ### **Notes**

@@ -17,63 +17,53 @@ function activate(context) {
   // This line of code will only be executed once when your extension is activated
   console.log('Congratulations, your extension "Copy Paste Path" is now active!')
 
-  let copyUnixPath = vscode.commands.registerCommand('extension.copyUnixPath', function () {
+  let copyPath = vscode.commands.registerCommand('extension.copyPath', function () {
     const editor = vscode.window.activeTextEditor
     if (editor) {
       const filePath = editor.document.fileName
       const unixPath = filePath.replace(/\\/g, '/')
       vscode.env.clipboard.writeText(unixPath)
-      vscode.window.showInformationMessage('Unix path copied to clipboard: ' + unixPath)
+      vscode.window.showInformationMessage('Path copied to clipboard: ' + unixPath)
     }
   })
 
-  let copyPasteQuotedUnixPath = vscode.commands.registerCommand('extension.copyPasteQuotedUnixPath', async function () {
+  let copyPastePath = vscode.commands.registerCommand('extension.copyPastePath', async function () {
     const editor = vscode.window.activeTextEditor
     if (editor) {
       const filePath = editor.document.fileName
       const unixPath = filePath.replace(/\\/g, '/')
-      const quotedPath = `'${unixPath}'`
       const position = editor.selection.active
       editor.edit(editBuilder => {
-        editBuilder.insert(position, quotedPath)
+        editBuilder.insert(position, unixPath)
       })
     }
   })
 
-  let copyUnixRelativePath = vscode.commands.registerCommand('extension.copyUnixRelativePath', function () {
+  let copyRelativePath = vscode.commands.registerCommand('extension.copyRelativePath', function () {
     const editor = vscode.window.activeTextEditor
     if (editor) {
       const filePath = editor.document.fileName
       const relativePath = vscode.workspace.asRelativePath(filePath)
       const unixPath = relativePath.replace(/\\/g, '/')
       vscode.env.clipboard.writeText(unixPath)
-      vscode.window.showInformationMessage('Unix path copied to clipboard: ' + unixPath)
+      vscode.window.showInformationMessage('Path copied to clipboard: ' + unixPath)
     }
   })
 
-  let copyPasteQuotedUnixRelativePath = vscode.commands.registerCommand(
-    'extension.copyPasteQuotedUnixRelativePath',
-    async function () {
-      const editor = vscode.window.activeTextEditor
-      if (editor) {
-        const filePath = editor.document.fileName
-        const relativePath = vscode.workspace.asRelativePath(filePath)
-        const unixPath = relativePath.replace(/\\/g, '/')
-        const quotedPath = `'${unixPath}'`
-        const position = editor.selection.active
-        editor.edit(editBuilder => {
-          editBuilder.insert(position, quotedPath)
-        })
-      }
+  let copyPasteRelativePath = vscode.commands.registerCommand('extension.copyPasteRelativePath', async function () {
+    const editor = vscode.window.activeTextEditor
+    if (editor) {
+      const filePath = editor.document.fileName
+      const relativePath = vscode.workspace.asRelativePath(filePath)
+      const unixPath = relativePath.replace(/\\/g, '/')
+      const position = editor.selection.active
+      editor.edit(editBuilder => {
+        editBuilder.insert(position, unixPath)
+      })
     }
-  )
+  })
 
-  context.subscriptions.push(
-    copyUnixPath,
-    copyPasteQuotedUnixPath,
-    copyUnixRelativePath,
-    copyPasteQuotedUnixRelativePath
-  )
+  context.subscriptions.push(copyPath, copyPastePath, copyRelativePath, copyPasteRelativePath)
 }
 
 // This method is called when your extension is deactivated

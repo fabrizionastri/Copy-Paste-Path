@@ -1,8 +1,8 @@
 {
   "name": "copy-paste-path",
   "displayName": "Copy Paste Path",
-  "description": "Copy the path to the current file to the clip board and past it in the current editor in Unix format (with forward slashes).",
-  "version": "0.0.1",
+  "description": "Copy the path to the current file to the clipboard and paste it in the current editor in Unix format (with forward slashes).",
+  "version": "0.0.3",
   "icon": "images/logo.png",
   "engines": {
     "vscode": "^1.76.0"
@@ -21,20 +21,20 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.copyUnixPath",
-        "title": "Copy Unix Path"
+        "command": "extension.copyPath",
+        "title": "Copy Path"
       },
       {
-        "command": "extension.copyPasteQuotedUnixPath",
-        "title": "Copy Paste Quoted Unix Path"
+        "command": "extension.copyPastePath",
+        "title": "Copy Paste Path"
       },
       {
-        "command": "extension.copyUnixRelativePath",
-        "title": "Copy Unix Relative Path"
+        "command": "extension.copyRelativePath",
+        "title": "Copy Relative Path"
       },
       {
-        "command": "extension.copyPasteQuotedUnixRelativePath",
-        "title": "Copy Paste Quoted Unix Relative Path"
+        "command": "extension.copyPasteRelativePath",
+        "title": "Copy Paste Relative Path"
       }
     ]
   }

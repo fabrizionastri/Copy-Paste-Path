@@ -22,7 +22,7 @@
 ## **Features**
 
 - Copy the full path of the current file to the clipboard in Unix format.
-- Paste the copied path with single quotes directly into the current editor.
+- Paste the copied path directly into the current editor.
 - Options for both absolute and relative paths from the project root.
 - Easy-to-use commands, accessible through the command palette.
 
@@ -30,10 +30,10 @@
 
 After installation, the extension provides four commands:
 
-1. Copy Unix Path
-2. Copy Paste Quoted Unix Path
-3. Copy Unix Relative Path
-4. Copy Paste Quoted Unix Relative Path
+1. Copy Path
+2. Copy Paste Path
+3. Copy Relative Path
+4. Copy Paste Relative Path
 
 These can be accessed by opening the command palette (**`Ctrl+Shift+P`** on Windows/Linux, **`Cmd+Shift+P`** on macOS) and typing the desired command. The path will either be copied to the clipboard or pasted directly into your editor, depending on the command used.
 
@@ -41,10 +41,10 @@ Use the keyboard shortcuts settings **`Ctrl+Alt+P`** (Windows/Linux) or **`Cmd+A
 
 ## **Commands**
 
-- **`Copy Unix Path`**: Copies the full path of the current file in Unix format to the clipboard.
-- **`Copy Paste Quoted Unix Path`**: Copies the full path in Unix format and pastes it with quotes at the current cursor position.
-- **`Copy Unix Relative Path`**: Copies the relative path from the project root in Unix format to the clipboard.
-- **`Copy Paste Quoted Unix Relative Path`**: Copies the relative path from the project root in Unix format and pastes it with quotes at the current cursor position.
+- **`Copy Path`**: Copies the full path of the current file in Unix format to the clipboard.
+- **`Copy Paste Path`**: Copies the full path in Unix format and pastes it at the current cursor position.
+- **`Copy Relative Path`**: Copies the relative path from the project root in Unix format to the clipboard.
+- **`Copy Paste Relative Path`**: Copies the relative path from the project root in Unix format and pastes it at the current cursor position.
 
 ## **Requirements**
 
