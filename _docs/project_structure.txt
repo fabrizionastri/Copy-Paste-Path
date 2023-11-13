@@ -1,0 +1,363 @@
+--- Folder Structure ---
+[.vscode]
+    ├── extensions.json
+    └── launch.json
+.vscodeignore
+CHANGELOG.md
+extension.js
+jsconfig.json
+LICENSE.txt
+package.json
+pnpm-lock.yaml
+README.md
+vsc-extension-quickstart.md
+
+--- File Contents ---
+
+--- File: .vscode\extensions.json ---
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the extensions.json format
+	"recommendations": [
+		"dbaeumer.vscode-eslint"
+	]
+}
+
+--- File: .vscode\launch.json ---
+// A launch configuration that launches the extension inside a new window
+// Use IntelliSense to learn about possible attributes.
+// Hover to view descriptions of existing attributes.
+// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Run Extension",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}"
+			]
+		},
+		{
+			"name": "Extension Tests",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--extensionTestsPath=${workspaceFolder}/test/suite/index"
+			]
+		}
+	]
+}
+
+
+--- File: .vscodeignore ---
+.gitignore
+node_modules
+vsc-extension-quickstart.md
+
+--- File: CHANGELOG.md ---
+# Change Log
+
+All notable changes to the "vscode-project-structure" extension will be documented in this file.
+
+Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+
+## **[0.0.1] - 2023-11-13**
+
+### **Added**
+
+- Initial release of the "Copy Paste Path" extension.
+- Implemented **`Copy Unix Path`** command to copy the full path of the current file in Unix format to the clipboard.
+- Implemented **`Copy Paste Quoted Unix Path`** command to copy the full path in Unix format and paste it with quotes at the current cursor position.
+- Implemented **`Copy Unix Relative Path`** command to copy the relative path from the project root in Unix format to the clipboard.
+- Implemented **`Copy Paste Quoted Unix Relative Path`** command to copy the relative path from the project root in Unix format and paste it with quotes at the current cursor position.
+- Added basic documentation in README.md.
+
+### **Notes**
+
+- This version serves as the foundation for the extension, providing core functionality for copying and pasting file paths in Unix format, both as absolute and relative paths from the project root.
+- The extension simplifies the process of handling file paths in cross-platform environments, especially useful for developers working in Unix and Windows environments.
+
+
+--- File: extension.js ---
+// extension.js
+
+// The module 'vscode' contains the VS Code extensibility API
+// Import the module and reference it with the alias vscode in your code below
+const vscode = require('vscode')
+const fs = require('fs')
+const path = require('path')
+
+// This method is called when your extension is activated
+// Your extension is activated the very first time the command is executed
+
+/**
+ * @param {vscode.ExtensionContext} context
+ */
+function activate(context) {
+  // Use the console to output diagnostic information (console.log) and errors (console.error)
+  // This line of code will only be executed once when your extension is activated
+  console.log('Congratulations, your extension "Copy Paste Path" is now active!')
+
+  let copyUnixPath = vscode.commands.registerCommand('extension.copyUnixPath', function () {
+    const editor = vscode.window.activeTextEditor
+    if (editor) {
+      const filePath = editor.document.fileName
+      const unixPath = filePath.replace(/\\/g, '/')
+      vscode.env.clipboard.writeText(unixPath)
+      vscode.window.showInformationMessage('Unix path copied to clipboard: ' + unixPath)
+    }
+  })
+
+  let copyPasteQuotedUnixPath = vscode.commands.registerCommand('extension.copyPasteQuotedUnixPath', async function () {
+    const editor = vscode.window.activeTextEditor
+    if (editor) {
+      const filePath = editor.document.fileName
+      const unixPath = filePath.replace(/\\/g, '/')
+      const quotedPath = `'${unixPath}'`
+      const position = editor.selection.active
+      editor.edit(editBuilder => {
+        editBuilder.insert(position, quotedPath)
+      })
+    }
+  })
+
+  let copyUnixRelativePath = vscode.commands.registerCommand('extension.copyUnixRelativePath', function () {
+    const editor = vscode.window.activeTextEditor
+    if (editor) {
+      const filePath = editor.document.fileName
+      const relativePath = vscode.workspace.asRelativePath(filePath)
+      const unixPath = relativePath.replace(/\\/g, '/')
+      vscode.env.clipboard.writeText(unixPath)
+      vscode.window.showInformationMessage('Unix path copied to clipboard: ' + unixPath)
+    }
+  })
+
+  let copyPasteQuotedUnixRelativePath = vscode.commands.registerCommand(
+    'extension.copyPasteQuotedUnixRelativePath',
+    async function () {
+      const editor = vscode.window.activeTextEditor
+      if (editor) {
+        const filePath = editor.document.fileName
+        const relativePath = vscode.workspace.asRelativePath(filePath)
+        const unixPath = relativePath.replace(/\\/g, '/')
+        const quotedPath = `'${unixPath}'`
+        const position = editor.selection.active
+        editor.edit(editBuilder => {
+          editBuilder.insert(position, quotedPath)
+        })
+      }
+    }
+  )
+
+  context.subscriptions.push(
+    copyUnixPath,
+    copyPasteQuotedUnixPath,
+    copyUnixRelativePath,
+    copyPasteQuotedUnixRelativePath
+  )
+}
+
+// This method is called when your extension is deactivated
+function deactivate() {}
+
+module.exports = {
+  activate,
+  deactivate
+}
+
+
+--- File: jsconfig.json ---
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "ES2020",
+		"checkJs": false,  /* Typecheck .js files. */
+		"lib": [
+			"ES2020"
+		]
+	},
+	"exclude": [
+		"node_modules"
+	]
+}
+
+
+--- File: LICENSE.txt ---
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+--- File: package.json ---
+{
+  "name": "copy-paste-path",
+  "displayName": "Copy Paste Path",
+  "description": "Copy the path to the current file to the clip board and past it in the current editor in Unix format (with forward slashes).",
+  "version": "0.0.1",
+  "icon": "images/logo.png",
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "publisher": "FabrizioNastri",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabrizionastri/Copy-Paste-Path"
+  },
+  "license": "MIT",
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.copyUnixPath",
+        "title": "Copy Unix Path"
+      },
+      {
+        "command": "extension.copyPasteQuotedUnixPath",
+        "title": "Copy Paste Quoted Unix Path"
+      },
+      {
+        "command": "extension.copyUnixRelativePath",
+        "title": "Copy Unix Relative Path"
+      },
+      {
+        "command": "extension.copyPasteQuotedUnixRelativePath",
+        "title": "Copy Paste Quoted Unix Relative Path"
+      }
+    ]
+  }
+}
+
+--- File: pnpm-lock.yaml ---
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+
+--- File: README.md ---
+<!-- README.md -->
+
+# **Copy Paste Path**
+
+> A simple Visual Studio Code extension for effortlessly copying and pasting file paths in Unix format (with forward slashes).
+
+## **Description**
+
+"Copy Paste Path" is a Visual Studio Code extension that allows you to quickly copy the path of the current file to the clipboard and paste it into the current editor, all in Unix format (with forward slashes).
+
+## **Table of Contents**
+
+- Features
+- Usage
+- Commands
+- Requirements
+- Extension Settings
+- Release Notes
+- Contributing
+- License
+
+## **Features**
+
+- Copy the full path of the current file to the clipboard in Unix format.
+- Paste the copied path with single quotes directly into the current editor.
+- Options for both absolute and relative paths from the project root.
+- Easy-to-use commands, accessible through the command palette.
+
+## **Usage**
+
+After installation, the extension provides four commands:
+
+1. Copy Unix Path
+2. Copy Paste Quoted Unix Path
+3. Copy Unix Relative Path
+4. Copy Paste Quoted Unix Relative Path
+
+These can be accessed by opening the command palette (**`Ctrl+Shift+P`** on Windows/Linux, **`Cmd+Shift+P`** on macOS) and typing the desired command. The path will either be copied to the clipboard or pasted directly into your editor, depending on the command used.
+
+Use the keyboard shortcuts settings **`Ctrl+Alt+P`** (Windows/Linux) or **`Cmd+Alt+P`** (macOS) to assign a keyboard shortcut to the desired command.
+
+## **Commands**
+
+- **`Copy Unix Path`**: Copies the full path of the current file in Unix format to the clipboard.
+- **`Copy Paste Quoted Unix Path`**: Copies the full path in Unix format and pastes it with quotes at the current cursor position.
+- **`Copy Unix Relative Path`**: Copies the relative path from the project root in Unix format to the clipboard.
+- **`Copy Paste Quoted Unix Relative Path`**: Copies the relative path from the project root in Unix format and pastes it with quotes at the current cursor position.
+
+## **Requirements**
+
+Visual Studio Code version 1.76.0 or higher.
+
+## **Extension Settings**
+
+Currently, there are no additional settings for this extension. It works out of the box with the provided commands.
+
+## **Release Notes**
+
+### **0.0.1**
+
+- Initial release of Copy Paste Path.
+
+## **Contributing**
+
+Contributions are welcome! If you have suggestions for improving the extension, feel free to open an issue or submit a pull request on the GitHub repository.
+
+## **License**
+
+This extension is released under the MIT License.
+
+
+--- File: vsc-extension-quickstart.md ---
+# Welcome to your VS Code Extension
+
+## What's in the folder
+
+* This folder contains all of the files necessary for your extension.
+* `package.json` - this is the manifest file in which you declare your extension and command.
+  * The sample plugin registers a command and defines its title and command name. With this information VS Code can show the command in the command palette. It doesn’t yet need to load the plugin.
+* `extension.js` - this is the main file where you will provide the implementation of your command.
+  * The file exports one function, `activate`, which is called the very first time your extension is activated (in this case by executing the command). Inside the `activate` function we call `registerCommand`.
+  * We pass the function containing the implementation of the command as the second parameter to `registerCommand`.
+
+## Get up and running straight away
+
+* Press `F5` to open a new window with your extension loaded.
+* Run your command from the command palette by pressing (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac) and typing `Hello World`.
+* Set breakpoints in your code inside `extension.js` to debug your extension.
+* Find output from your extension in the debug console.
+
+## Make changes
+
+* You can relaunch the extension from the debug toolbar after changing code in `extension.js`.
+* You can also reload (`Ctrl+R` or `Cmd+R` on Mac) the VS Code window with your extension to load your changes.
+
+## Explore the API
+
+* You can open the full set of our API when you open the file `node_modules/@types/vscode/index.d.ts`.
+
+## Run tests
+
+* Open the debug viewlet (`Ctrl+Shift+D` or `Cmd+Shift+D` on Mac) and from the launch configuration dropdown pick `Extension Tests`.
+* Press `F5` to run the tests in a new window with your extension loaded.
+* See the output of the test result in the debug console.
+* Make changes to `src/test/suite/extension.test.js` or create new test files inside the `test/suite` folder.
+  * The provided test runner will only consider files matching the name pattern `**.test.ts`.
+  * You can create folders inside the `test` folder to structure your tests any way you want.
+
+## Go further
+
+ * [Follow UX guidelines](https://code.visualstudio.com/api/ux-guidelines/overview) to create extensions that seamlessly integrate with VS Code's native interface and patterns.
+ * [Publish your extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) on the VS Code extension marketplace.
+ * Automate builds by setting up [Continuous Integration](https://code.visualstudio.com/api/working-with-extensions/continuous-integration).
+

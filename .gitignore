@@ -1,0 +1,9 @@
+# Auto generated files
+node_modules
+
+# Build files
+build
+dist
+
+# Other files
+docs

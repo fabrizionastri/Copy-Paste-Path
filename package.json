@@ -1,0 +1,41 @@
+{
+  "name": "copy-paste-path",
+  "displayName": "Copy Paste Path",
+  "description": "Copy the path to the current file to the clip board and past it in the current editor in Unix format (with forward slashes).",
+  "version": "0.0.1",
+  "icon": "images/logo.png",
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "publisher": "FabrizioNastri",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabrizionastri/Copy-Paste-Path"
+  },
+  "license": "MIT",
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.copyUnixPath",
+        "title": "Copy Unix Path"
+      },
+      {
+        "command": "extension.copyPasteQuotedUnixPath",
+        "title": "Copy Paste Quoted Unix Path"
+      },
+      {
+        "command": "extension.copyUnixRelativePath",
+        "title": "Copy Unix Relative Path"
+      },
+      {
+        "command": "extension.copyPasteQuotedUnixRelativePath",
+        "title": "Copy Paste Quoted Unix Relative Path"
+      }
+    ]
+  }
+}
